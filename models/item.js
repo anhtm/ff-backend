@@ -5,7 +5,6 @@ module.exports = (sequelize, DataTypes) => {
     {
       name: DataTypes.STRING,
       done: DataTypes.BOOLEAN,
-      date_added: DataTypes.DATE,
       expired: DataTypes.BOOLEAN
     },
     {}

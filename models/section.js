@@ -4,7 +4,7 @@ module.exports = (sequelize, DataTypes) => {
     'Section',
     {
       name: DataTypes.STRING,
-      totalItems: DataTypes.INTEGER
+      total_items: DataTypes.INTEGER
     },
     {}
   );
