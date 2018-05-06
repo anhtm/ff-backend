@@ -14,15 +14,18 @@ module.exports = {
       done: {
         type: Sequelize.BOOLEAN
       },
+      food_id: {
+        type: Sequelize.INTEGER
+      },
       expired: {
         type: Sequelize.BOOLEAN
       },
       createdAt: {
-        allowNull: false,
+        allowNull: true,
         type: Sequelize.DATE
       },
       updatedAt: {
-        allowNull: false,
+        allowNull: true,
         type: Sequelize.DATE
       }
     });

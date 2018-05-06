@@ -8,8 +8,8 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      timestamp: {
-        type: Sequelize.DATE
+      action: {
+        type: Sequelize.STRING
       },
       createdAt: {
         allowNull: false,
