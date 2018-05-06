@@ -11,5 +11,17 @@
 // 9. /user/:user_id/activities -> GET (list of activities)
 // 10. /user/:user_id/activity/:activity_id -> GET (a specific activity)
 
-// ?? should /user/:user_id stay in the routes? Since there is always 1 user for each session. 
+// ?? should /user/:user_id stay in the routes? Since there is always 1 user for each session.
 // This should be done in /signin
+const userRoutes = require('./controllers/user');
+
+module.exports = app => {
+  app.get('/', (req, res) => {
+    res.send('Hello world');
+  });
+  app.get('/users', userRoutes.index);
+  app.get('/user/:id', userRoutes.show);
+  app.post('/user', userRoutes.create);
+  app.put('/user/:id', userRoutes.update);
+  app.delete('/user/:id', userRoutes.delete);
+};

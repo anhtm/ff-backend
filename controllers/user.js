@@ -4,8 +4,8 @@ const Item = require('../models/').Item;
 module.exports = {
   index(req, res) {
     User.findAll()
-      .then(function(user) {
-        sendResult(res, user);
+      .then(function(users) {
+        sendResult(res, users);
       })
       .catch(function(error) {
         sendError(res, error);

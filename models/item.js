@@ -6,22 +6,23 @@ module.exports = (sequelize, DataTypes) => {
       name: DataTypes.STRING,
       done: DataTypes.BOOLEAN,
       expired: DataTypes.BOOLEAN,
-      food_id: DataTypes.INTEGER
+      food_id: DataTypes.INTEGER,
+      section: DataTypes.STRING
     },
     {
       underscore: true,
       timestamps: false,
       createdAt: {
-        defaultValue: DataTypes.NOW
+        defaultValue: new Date()
       },
       updatedAt: {
-        defaultValue: DataTypes.NOW
+        defaultValue: new Date()
       }
     }
   );
   Item.associate = function(models) {
     // associations can be defined here
-    Item.belongsTo(models.Section, { foreignKey: 'section_id' });
+    // Item.belongsTo(models.Section, { foreignKey: 'section_id' });
     Item.belongsTo(models.User, { foreignKey: 'user_id' });
   };
   return Item;

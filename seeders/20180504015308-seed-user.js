@@ -8,23 +8,23 @@ module.exports = {
         {
           first_name: 'John',
           last_name: 'Doe',
-          createdAt: new Date(),
-          updatedAt: new Date(),
-          email: 'johnDoe@test.com'
+          email: 'johndoe@test.com'
         },
-        {
-          first_name: 'Minh',
-          last_name: 'Anh',
-          createdAt: new Date(),
-          updatedAt: new Date(),
-          email: 'minhanh@test.com'
-        },
+
         {
           first_name: 'Jane',
           last_name: 'Dovey',
-          createdAt: new Date(),
-          updatedAt: new Date(),
-          email: 'janeDovey@test.com'
+          email: 'janedovey@test.com'
+        },
+        {
+          first_name: 'minh',
+          last_name: 'anh',
+          email: 'minhanh@test.com'
+        },
+        {
+          first_name: 'Pratt',
+          last_name: 'San',
+          email: 'prattsan@test.com'
         }
       ],
       {}
@@ -32,10 +32,6 @@ module.exports = {
   },
 
   down: (queryInterface, Sequelize) => {
-    queryInterface.bulkDelete('Users', [
-      {
-        first_name: 'John'
-      }
-    ]);
+    return queryInterface.bulkDelete('Sections', null, {});
   }
 };

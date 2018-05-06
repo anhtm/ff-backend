@@ -17,6 +17,9 @@ module.exports = {
       food_id: {
         type: Sequelize.INTEGER
       },
+      section: {
+        type: Sequelize.STRING
+      },
       expired: {
         type: Sequelize.BOOLEAN
       },

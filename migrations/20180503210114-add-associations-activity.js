@@ -3,21 +3,12 @@
 module.exports = {
   up: (queryInterface, Sequelize) => {
     return queryInterface
-      .addColumn('Activities', 'section_id', {
+      .addColumn('Activities', 'user_id', {
         type: Sequelize.INTEGER,
         references: {
-          model: 'Sections',
+          model: 'Users',
           key: 'id'
         }
-      })
-      .then(() => {
-        return queryInterface.addColumn('Activities', 'user_id', {
-          type: Sequelize.INTEGER,
-          references: {
-            model: 'Users',
-            key: 'id'
-          }
-        });
       })
       .then(() => {
         return queryInterface.addColumn('Activities', 'item_id', {
@@ -31,10 +22,8 @@ module.exports = {
   },
 
   down: (queryInterface, Sequelize) => {
-    return queryInterface.removeColumn('Activities', 'section_id').then(() => {
-      return queryInterface.removeColumn('Activities', 'user_id').then(() => {
-        return queryInterface.removeColumn('Activities', 'item_id');
-      });
+    return queryInterface.removeColumn('Activities', 'user_id').then(() => {
+      return queryInterface.removeColumn('Activities', 'item_id');
     });
   }
 };
