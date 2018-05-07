@@ -1,28 +1,30 @@
-const User = require('../models/').User;
 const Item = require('../models/').Item;
 const Activity = require('../models').Activity;
+const { sendResult, sendError } = require('../helpers/resSenders');
 
 module.exports = {
   index(req, res) {
     Item.findAll({
       where: { user_id: req.params.user_id }
     })
-      .then(function(items) {
+      .then(items => {
         sendResult(res, items);
       })
-      .catch(function(error) {
-        sendError(res, error);
+      .catch(err => {
+        sendError(res, err);
       });
   },
+
   show(req, res) {
     Item.findById(req.params.item_id)
-      .then(function(item) {
+      .then(item => {
         sendResult(res, item);
       })
-      .catch(function(error) {
-        sendError(res, error);
+      .catch(err => {
+        sendError(res, err);
       });
   },
+
   showWithUserId(req, res) {
     Item.findOne({
       where: { user_id: req.params.user_id, id: req.params.item_id }
@@ -30,10 +32,11 @@ module.exports = {
       .then(item => {
         res.json(item);
       })
-      .catch(error => {
-        res.json(error);
+      .catch(err => {
+        res.json(err);
       });
   },
+
   create(req, res) {
     Item.create({
       name: req.body.name,
@@ -41,7 +44,7 @@ module.exports = {
       section: req.body.section,
       user_id: req.params.user_id
     })
-      .then(function(newItem) {
+      .then(newItem => {
         res.json(newItem);
         return Activity.create({
           action: 'c',
@@ -49,63 +52,56 @@ module.exports = {
           item_id: newItem.dataValues.id
         });
       })
-      .then(function(newActivity) {
+      .then(() => {
         console.log('New activity added: Item created');
       })
-      .catch(function(error) {
-        res.json(error);
+      .catch(err => {
+        res.json(err);
       });
   },
+
   update(req, res) {
     Item.update(req.body, {
       where: {
         id: req.params.item_id
       }
     })
-      .then(function(updatedItem) {
+      // TODO: separate update-done vs update-expired
+      .then(() => {
         return Activity.create({
           action: 'u',
           user_id: req.params.user_id,
           item_id: req.params.item_id
         });
       })
-      .then(newActivity => {
+      .then(() => {
         console.log('New activity added: Item updated');
       })
       .catch(function(err) {
         res.json(err);
       });
   },
+
   delete(req, res) {
     Item.destroy({
       where: {
-        id: req.params.item_id
-        // user_id: req.params.user_id
+        id: req.params.item_id,
+        user_id: req.params.user_id
       }
     })
-      .then(function(deletedItem) {
-        res.json(deletedItem);
-        console.log(deletedItem._previousDataValues);
+      // TODO: fix bug - can't add to Activity since item_id is cascaded
+      .then(() => {
         return Activity.create({
           action: 'd',
           user_id: req.params.user_id,
           item_id: req.params.item_id
         });
       })
-      .then(newActivity => {
+      .then(() => {
         console.log('New activity added: Item deleted');
       })
-      .catch(function(err) {
+      .catch(err => {
         res.json(err);
       });
   }
 };
-
-// helper functions
-function sendResult(res, result) {
-  res.status(200).json(result);
-}
-
-function sendError(res, result) {
-  res.status(500).json(result);
-}

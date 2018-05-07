@@ -1,5 +1,3 @@
-// all the routes imported here
-
 // 1. / -> GET landing page
 // 2. /signin -> POST (signin to app & start session) + GET
 // 3. /signup -> POST (create new user & send confirmation email) + GET

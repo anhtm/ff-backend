@@ -1,74 +1,66 @@
 const User = require('../models/').User;
-const Item = require('../models/').Item;
+const { sendResult, sendError } = require('../helpers/resSenders');
 
 module.exports = {
-  index(req, res) {
+  index: (req, res) => {
     User.findAll()
-      .then(function(users) {
+      .then(users => {
         sendResult(res, users);
       })
-      .catch(function(error) {
-        sendError(res, error);
+      .catch(err => {
+        sendError(res, err);
       });
   },
 
-  show(req, res) {
+  show: (req, res) => {
     User.findById(req.params.id)
-      .then(function(user) {
+      .then(user => {
         sendResult(res, user);
       })
-      .catch(function(error) {
-        sendError(res, error);
+      .catch(err => {
+        sendError(res, err);
       });
   },
 
-  create(req, res) {
+  create: (req, res) => {
     return User.create({
       first_name: req.body.first_name,
       last_name: req.body.last_name,
       email: req.body.email
     })
-      .then(function(newUser) {
+      .then(newUser => {
         res.json(newUser);
       })
-      .catch(function(err) {
+      .catch(err => {
         res.json(err);
       });
   },
 
-  update(req, res) {
+  update: (req, res) => {
     User.update(req.body, {
       where: {
         id: req.params.id
       }
     })
-      .then(function(updatedUser) {
+      .then(updatedUser => {
         res.json(updatedUser);
       })
-      .catch(function(err) {
+      .catch(err => {
         res.json(err);
       });
   },
-  delete(req, res) {
+
+  delete: (req, res) => {
     User.destroy({
       where: {
         id: req.params.id
       }
     })
-      .then(function(deletedUser) {
+      .then(deletedUser => {
         res.json(deletedUser);
       })
-      .catch(function(err) {
+      .catch(err => {
         res.json(err);
       });
   }
 };
-
-// helper functions
-function sendResult(res, result) {
-  res.status(200).json(result);
-}
-
-function sendError(res, result) {
-  res.status(500).json(result);
-}
