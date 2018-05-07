@@ -14,6 +14,8 @@
 // ?? should /user/:user_id stay in the routes? Since there is always 1 user for each session.
 // This should be done in /signin
 const userRoutes = require('./controllers/user');
+const itemRoutes = require('./controllers/item');
+const activityRoutes = require('./controllers/activity');
 
 module.exports = app => {
   app.get('/', (req, res) => {
@@ -24,4 +26,13 @@ module.exports = app => {
   app.post('/user', userRoutes.create);
   app.put('/user/:id', userRoutes.update);
   app.delete('/user/:id', userRoutes.delete);
+
+  app.get('/:user_id/items', itemRoutes.index);
+  app.get('/item/:item_id', itemRoutes.show);
+  app.get('/:user_id/item/:item_id', itemRoutes.showWithUserId);
+  app.post('/:user_id/item', itemRoutes.create);
+  app.put('/:user_id/item/:item_id', itemRoutes.update);
+  app.delete('/:user_id/item/:item_id', itemRoutes.delete);
+
+  app.get('/:user_id/activities', activityRoutes.index);
 };

@@ -17,6 +17,7 @@ module.exports = {
 
     return queryInterface.addColumn('Items', 'user_id', {
       type: Sequelize.INTEGER,
+      allowNull: false,
       references: {
         model: 'Users',
         key: 'id'

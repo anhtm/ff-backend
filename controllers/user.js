@@ -23,20 +23,16 @@ module.exports = {
   },
 
   create(req, res) {
-    console.log(req.body);
-    return User.create(
-      {
-        first_name: req.body.first_name,
-        last_name: req.body.last_name,
-        email: req.body.email
-      },
-      { fields: ['first_name', 'last_name', 'email'] }
-    )
+    return User.create({
+      first_name: req.body.first_name,
+      last_name: req.body.last_name,
+      email: req.body.email
+    })
       .then(function(newUser) {
-        sendResult(newUser);
+        res.json(newUser);
       })
-      .catch(function(error) {
-        sendError(res, error);
+      .catch(function(err) {
+        res.json(err);
       });
   },
 
@@ -47,10 +43,10 @@ module.exports = {
       }
     })
       .then(function(updatedUser) {
-        sendResult(res, updatedUser);
+        res.json(updatedUser);
       })
       .catch(function(err) {
-        sendError(res, err);
+        res.json(err);
       });
   },
   delete(req, res) {
@@ -60,10 +56,10 @@ module.exports = {
       }
     })
       .then(function(deletedUser) {
-        sendResult(res, deletedUser);
+        res.json(deletedUser);
       })
       .catch(function(err) {
-        sendError(res, err);
+        res.json(err);
       });
   }
 };

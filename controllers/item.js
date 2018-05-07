@@ -1,10 +1,11 @@
 const User = require('../models/').User;
 const Item = require('../models/').Item;
+const Activity = require('../models').Activity;
 
 module.exports = {
   index(req, res) {
     Item.findAll({
-      where: { UserId: req.params.user_id }
+      where: { user_id: req.params.user_id }
     })
       .then(function(items) {
         sendResult(res, items);
@@ -14,51 +15,88 @@ module.exports = {
       });
   },
   show(req, res) {
-    User.findById(req.params.id)
-      .then(function(user) {
-        sendResult(res, user);
+    Item.findById(req.params.item_id)
+      .then(function(item) {
+        sendResult(res, item);
       })
       .catch(function(error) {
         sendError(res, error);
+      });
+  },
+  showWithUserId(req, res) {
+    Item.findOne({
+      where: { user_id: req.params.user_id, id: req.params.item_id }
+    })
+      .then(item => {
+        res.json(item);
+      })
+      .catch(error => {
+        res.json(error);
       });
   },
   create(req, res) {
-    User.create({
-      first_name: req.body.first_name,
-      last_name: req.body.last_name,
-      email: req.body.email
+    Item.create({
+      name: req.body.name,
+      food_id: req.body.food_id,
+      section: req.body.section,
+      user_id: req.params.user_id
     })
-      .then(function(newUser) {
-        res.json(newUser);
+      .then(function(newItem) {
+        res.json(newItem);
+        return Activity.create({
+          action: 'c',
+          user_id: req.params.user_id,
+          item_id: newItem.dataValues.id
+        });
+      })
+      .then(function(newActivity) {
+        console.log('New activity added: Item created');
       })
       .catch(function(error) {
-        sendError(res, error);
+        res.json(error);
       });
   },
   update(req, res) {
-    User.update(req.body, {
+    Item.update(req.body, {
       where: {
-        id: req.params.id
+        id: req.params.item_id
       }
     })
-      .then(function(updatedUser) {
-        sendResult(res, updatedUser);
+      .then(function(updatedItem) {
+        return Activity.create({
+          action: 'u',
+          user_id: req.params.user_id,
+          item_id: req.params.item_id
+        });
+      })
+      .then(newActivity => {
+        console.log('New activity added: Item updated');
       })
       .catch(function(err) {
-        sendError(res, err);
+        res.json(err);
       });
   },
   delete(req, res) {
-    User.destroy({
+    Item.destroy({
       where: {
-        id: req.params.id
+        id: req.params.item_id
+        // user_id: req.params.user_id
       }
     })
-      .then(function(deletedUser) {
-        sendResult(res, deletedUser);
+      .then(function(deletedItem) {
+        res.json(deletedItem);
+        console.log(deletedItem._previousDataValues);
+        return Activity.create({
+          action: 'd',
+          user_id: req.params.user_id,
+          item_id: req.params.item_id
+        });
+      })
+      .then(newActivity => {
+        console.log('New activity added: Item deleted');
       })
       .catch(function(err) {
-        sendError(res, err);
+        res.json(err);
       });
   }
 };

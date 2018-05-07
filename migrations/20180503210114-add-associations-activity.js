@@ -5,6 +5,7 @@ module.exports = {
     return queryInterface
       .addColumn('Activities', 'user_id', {
         type: Sequelize.INTEGER,
+        allowNull: false,
         references: {
           model: 'Users',
           key: 'id'
@@ -13,10 +14,12 @@ module.exports = {
       .then(() => {
         return queryInterface.addColumn('Activities', 'item_id', {
           type: Sequelize.INTEGER,
+          allowNull: true,
           references: {
             model: 'Items',
             key: 'id'
-          }
+          },
+          onDelete: 'cascade'
         });
       });
   },
