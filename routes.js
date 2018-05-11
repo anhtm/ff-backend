@@ -14,13 +14,15 @@
 const userRoutes = require('./controllers/user');
 const itemRoutes = require('./controllers/item');
 const activityRoutes = require('./controllers/activity');
+const { authenticate } = require('./helpers/authenticate');
 
 module.exports = app => {
   app.get('/', (req, res) => {
     res.send('Hello world');
   });
   app.get('/users', userRoutes.index);
-  app.get('/user/:id', userRoutes.show);
+  //app.get('/user/:id', userRoutes.show);
+  app.get('/user/me', authenticate, userRoutes.showInPrivate);
   app.post('/user', userRoutes.create);
   app.put('/user/:id', userRoutes.update);
   app.delete('/user/:id', userRoutes.delete);

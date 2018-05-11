@@ -28,22 +28,6 @@ module.exports = (sequelize, DataTypes) => {
         }
       },
       token: { type: DataTypes.STRING }
-      // password: {
-      //   type: DataTypes.VIRTUAL,
-      //   allowNull: false,
-      //   set: function(val) {
-      //     // Remember to set the data value, otherwise it won't be validated
-      //     this.setDataValue('password', val);
-      //     this.setDataValue('password_hash', this.salt + val);
-      //   },
-      //   validate: {
-      //     isLongEnough: function(val) {
-      //       if (val.length < 8) {
-      //         throw new Error('Please choose a longer password');
-      //       }
-      //     }
-      //   }
-      // }
     },
     {
       timestamps: false
@@ -65,6 +49,26 @@ module.exports = (sequelize, DataTypes) => {
       }
     ).then(() => {
       return token;
+    });
+  };
+
+  User.prototype.toJSON = function() {
+    var user = this;
+    return _.pick(user.dataValues, ['id', 'first_name', 'last_name', 'email']);
+  };
+
+  User.findByToken = function(token) {
+    var decoded;
+    try {
+      decoded = jwt.verify(token, 'secret');
+    } catch (e) {
+      return Promise.reject();
+    }
+    return User.findOne({
+      where: {
+        id: decoded.id,
+        token: token
+      }
     });
   };
 

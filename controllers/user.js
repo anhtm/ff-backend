@@ -25,6 +25,10 @@ module.exports = {
       });
   },
 
+  showInPrivate: (req, res) => {
+    res.send(req.user);
+  },
+
   create: (req, res) => {
     var newUser = User.build(req.body);
     newUser
@@ -33,7 +37,7 @@ module.exports = {
         return newUser.generateAuthToken();
       })
       .then(token => {
-        res.header('x-auth', token).send(newUser);
+        res.header('x-auth', token).send(newUser.toJSON());
       })
       .catch(err => {
         sendResult(res, 400, err);
