@@ -1,38 +1,42 @@
 const User = require('../models/').User;
-const { sendResult, sendError } = require('../helpers/resSenders');
+const { sendResult, sendJSONResult } = require('../helpers/resSenders');
 
 module.exports = {
   index: (req, res) => {
     User.findAll()
       .then(users => {
-        sendResult(res, users);
+        sendResult(res, 200, users);
       })
       .catch(err => {
-        sendError(res, err);
+        sendResult(res, 400, err);
       });
   },
 
   show: (req, res) => {
     User.findById(req.params.id)
       .then(user => {
-        sendResult(res, user);
+        if (!user) {
+          sendResult(res, 404, null);
+        }
+        sendResult(res, 200, user);
       })
       .catch(err => {
-        sendError(res, err);
+        sendResult(res, 400, err);
       });
   },
 
   create: (req, res) => {
-    return User.create({
-      first_name: req.body.first_name,
-      last_name: req.body.last_name,
-      email: req.body.email
-    })
-      .then(newUser => {
-        res.json(newUser);
+    var newUser = User.build(req.body);
+    newUser
+      .save()
+      .then(() => {
+        return newUser.generateAuthToken();
+      })
+      .then(token => {
+        res.header('x-auth', token).send(newUser);
       })
       .catch(err => {
-        res.json(err);
+        sendResult(res, 400, err);
       });
   },
 
@@ -42,11 +46,12 @@ module.exports = {
         id: req.params.id
       }
     })
-      .then(updatedUser => {
-        res.json(updatedUser);
+      .then(() => {
+        sendJSONResult(res, 200);
+        sendJSONResult({ message: 'Successfully updated user' });
       })
       .catch(err => {
-        res.json(err);
+        sendResult(res, 400, err);
       });
   },
 

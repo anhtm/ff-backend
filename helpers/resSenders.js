@@ -1,13 +1,19 @@
 // helper functions
-let sendResult = (res, result) => {
-  res.status(200).json(result);
+let sendJSONResult = (res, statusCode, result = null) => {
+  return res.status(statusCode).json(result);
 };
 
-let sendError = (res, result) => {
-  res.status(500).json(result);
+let sendResult = (res, statusCode, result = null) => {
+  return res.status(statusCode).send(result);
 };
 
 module.exports = {
-  sendResult,
-  sendError
+  sendJSONResult,
+  sendResult
 };
+
+/*
+400: bad request
+404: not found
+500: server
+*/

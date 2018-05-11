@@ -3,7 +3,6 @@ const http = require('http');
 const mysql = require('mysql');
 
 const database = require('./config/database');
-//const { db } = require('./config/db');
 const db = require('./models');
 const bodyParser = require('body-parser');
 
@@ -18,15 +17,15 @@ app.use(
 );
 require('./routes')(app);
 
-// Connect to MySQL on start
-// database.connect(db.MODE_PRODUCTION, (err) => {
-//   if (err) {
-//     console.log('Unable to connect to MySQL.')
-//     process.exit(1)
-//   } else {
-//     console.log("Database is connected...");
-//   }
-// })
+/* Connect to MySQL on start
+database.connect(db.MODE_PRODUCTION, (err) => {
+  if (err) {
+    console.log('Unable to connect to MySQL.')
+    process.exit(1)
+  } else {
+    console.log("Database is connected...");
+  }
+}) */
 
 server.listen(port, () => {
   console.log(`Server is up on port ${port}`);

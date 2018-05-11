@@ -7,7 +7,8 @@ module.exports = (sequelize, DataTypes) => {
       done: { type: DataTypes.BOOLEAN, defaultValue: false },
       expired: { type: DataTypes.BOOLEAN, defaultValue: false },
       food_id: { type: DataTypes.INTEGER, allowNull: false },
-      section: { type: DataTypes.STRING, allowNull: false }
+      section: { type: DataTypes.STRING, allowNull: false },
+      isFavorite: { type: DataTypes.BOOLEAN, defaultValue: false }
     },
     {
       underscore: true,

@@ -1,6 +1,6 @@
 const Item = require('../models/').Item;
 const Activity = require('../models').Activity;
-const { sendResult, sendError } = require('../helpers/resSenders');
+const { sendResult, sendJSONResult } = require('../helpers/resSenders');
 
 module.exports = {
   index(req, res) {
@@ -8,10 +8,10 @@ module.exports = {
       where: { user_id: req.params.user_id }
     })
       .then(items => {
-        sendResult(res, items);
+        sendResult(res, 200, items);
       })
       .catch(err => {
-        sendError(res, err);
+        sendResult(res, 400, err);
       });
   },
 
