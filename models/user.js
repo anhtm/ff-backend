@@ -1,6 +1,8 @@
 'use strict';
 const jwt = require('jsonwebtoken');
 const _ = require('lodash');
+const bcrypt = require('bcryptjs');
+const { encryptPassword } = require('../helpers/hashing');
 
 module.exports = (sequelize, DataTypes) => {
   var User = sequelize.define(
@@ -71,6 +73,17 @@ module.exports = (sequelize, DataTypes) => {
       }
     });
   };
+
+  User.beforeCreate((user, options) => {
+    return encryptPassword(user.password)
+      .then(res => {
+        user.password = res;
+        console.log('hashed beforeCreate: ' + user.password);
+      })
+      .catch(err => {
+        if (err) console.log(err);
+      });
+  });
 
   return User;
 };

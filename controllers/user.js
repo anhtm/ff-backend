@@ -19,6 +19,7 @@ module.exports = {
           sendResult(res, 404, null);
         }
         sendResult(res, 200, user);
+        // console.log(user);
       })
       .catch(err => {
         sendResult(res, 400, err);

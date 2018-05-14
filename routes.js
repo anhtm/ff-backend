@@ -21,7 +21,7 @@ module.exports = app => {
     res.send('Hello world');
   });
   app.get('/users', userRoutes.index);
-  //app.get('/user/:id', userRoutes.show);
+  app.get('/user/id/:id', userRoutes.show);
   app.get('/user/me', authenticate, userRoutes.showInPrivate);
   app.post('/user', userRoutes.create);
   app.put('/user/:id', userRoutes.update);
