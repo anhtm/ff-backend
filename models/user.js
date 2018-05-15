@@ -36,6 +36,7 @@ module.exports = (sequelize, DataTypes) => {
       timestamps: false
     }
   );
+
   User.associate = function(models) {};
 
   User.prototype.generateAuthToken = function() {
@@ -53,6 +54,19 @@ module.exports = (sequelize, DataTypes) => {
     ).then(() => {
       return token;
     });
+  };
+
+  User.prototype.removeToken = function() {
+    return User.update(
+      {
+        token: ''
+      },
+      {
+        where: {
+          id: this.id
+        }
+      }
+    );
   };
 
   User.prototype.toJSON = function() {

@@ -84,5 +84,13 @@ module.exports = {
       .catch(e => {
         res.status(400).send();
       });
+  },
+
+  invalidate: (req, res) => {
+    User.findByToken(req.get('x-auth')).then(user => {
+      return user.removeToken().then(() => {
+        res.status(200).send();
+      });
+    });
   }
 };

@@ -36,4 +36,5 @@ module.exports = app => {
 
   app.get('/:user_id/activities', activityRoutes.index);
   app.post('/login', userRoutes.validate);
+  app.put('/logout', userRoutes.invalidate);
 };
