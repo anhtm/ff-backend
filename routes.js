@@ -35,4 +35,5 @@ module.exports = app => {
   app.delete('/:user_id/item/:item_id', itemRoutes.delete);
 
   app.get('/:user_id/activities', activityRoutes.index);
+  app.post('/login', userRoutes.validate);
 };

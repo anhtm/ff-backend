@@ -31,3 +31,5 @@ server.listen(port, () => {
   console.log(`Server is up on port ${port}`);
   db.sequelize.sync();
 });
+
+module.exports = { app };

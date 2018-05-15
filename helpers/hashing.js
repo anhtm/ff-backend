@@ -1,3 +1,5 @@
+const bcrypt = require('bcryptjs');
+
 var encryptPassword = function(password) {
   return new Promise(function(resolve, reject) {
     bcrypt.genSalt(10, function(err, salt) {
