@@ -1,5 +1,6 @@
 const User = require('../models/').User;
 const { sendResult, sendJSONResult } = require('../helpers/resSenders');
+const _ = require('lodash');
 
 module.exports = {
   index: (req, res) => {
@@ -46,7 +47,13 @@ module.exports = {
   },
 
   update: (req, res) => {
-    User.update(req.body, {
+    var body = _.pick(req.body, [
+      'first_name',
+      'last_name',
+      'email',
+      'password'
+    ]);
+    User.update(body, {
       where: {
         id: req.params.id
       }
@@ -87,10 +94,13 @@ module.exports = {
   },
 
   invalidate: (req, res) => {
-    User.findByToken(req.get('x-auth')).then(user => {
-      return user.removeToken().then(() => {
+    req.user
+      .removeToken()
+      .then(() => {
         res.status(200).send();
+      })
+      .catch(err => {
+        res.status(400).send();
       });
-    });
   }
 };
