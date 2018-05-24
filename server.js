@@ -1,6 +1,7 @@
 const express = require('express');
 const http = require('http');
 const mysql = require('mysql');
+const cors = require('cors');
 
 const database = require('./config/database');
 const db = require('./models');
@@ -15,6 +16,7 @@ app.use(
     extended: true
   })
 );
+app.use(cors());
 require('./routes')(app);
 
 /* Connect to MySQL on start

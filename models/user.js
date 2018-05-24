@@ -36,6 +36,7 @@ module.exports = (sequelize, DataTypes) => {
       timestamps: false
     }
   );
+
   User.associate = function(models) {};
 
   User.prototype.generateAuthToken = function() {
@@ -55,9 +56,28 @@ module.exports = (sequelize, DataTypes) => {
     });
   };
 
+  User.prototype.removeToken = function() {
+    return User.update(
+      {
+        token: ''
+      },
+      {
+        where: {
+          id: this.id
+        }
+      }
+    );
+  };
+
   User.prototype.toJSON = function() {
     var user = this;
-    return _.pick(user.dataValues, ['id', 'first_name', 'last_name', 'email']);
+    return _.pick(user.dataValues, [
+      'id',
+      'first_name',
+      'last_name',
+      'email',
+      'token'
+    ]);
   };
 
   User.findByToken = function(token) {

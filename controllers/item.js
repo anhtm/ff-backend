@@ -1,6 +1,7 @@
 const Item = require('../models/').Item;
 const Activity = require('../models').Activity;
 const { sendResult, sendJSONResult } = require('../helpers/resSenders');
+const _ = require('lodash');
 
 module.exports = {
   index(req, res) {
@@ -27,7 +28,7 @@ module.exports = {
 
   showWithUserId(req, res) {
     Item.findOne({
-      where: { user_id: req.params.user_id, id: req.params.item_id }
+      where: { user_id: req.user.id, id: req.params.item_id }
     })
       .then(item => {
         res.json(item);
@@ -42,18 +43,10 @@ module.exports = {
       name: req.body.name,
       food_id: req.body.food_id,
       section: req.body.section,
-      user_id: req.params.user_id
+      user_id: req.user.id
     })
       .then(newItem => {
         res.json(newItem);
-        return Activity.create({
-          action: 'c',
-          user_id: req.params.user_id,
-          item_id: newItem.dataValues.id
-        });
-      })
-      .then(() => {
-        console.log('New activity added: Item created');
       })
       .catch(err => {
         res.json(err);
@@ -61,24 +54,25 @@ module.exports = {
   },
 
   update(req, res) {
-    Item.update(req.body, {
+    var body = _.pick(req.body, [
+      'done',
+      'expired',
+      'isFavorite',
+      'section',
+      'name'
+    ]);
+    Item.update(body, {
       where: {
-        id: req.params.item_id
+        id: req.params.item_id,
+        user_id: req.user.id
       }
     })
       // TODO: separate update-done vs update-expired
       .then(() => {
-        return Activity.create({
-          action: 'u',
-          user_id: req.params.user_id,
-          item_id: req.params.item_id
-        });
-      })
-      .then(() => {
-        console.log('New activity added: Item updated');
+        res.status(200).send();
       })
       .catch(function(err) {
-        res.json(err);
+        res.status(400).send(err);
       });
   },
 
@@ -86,22 +80,15 @@ module.exports = {
     Item.destroy({
       where: {
         id: req.params.item_id,
-        user_id: req.params.user_id
+        user_id: req.user.id
       }
     })
       // TODO: fix bug - can't add to Activity since item_id is cascaded
       .then(() => {
-        return Activity.create({
-          action: 'd',
-          user_id: req.params.user_id,
-          item_id: req.params.item_id
-        });
-      })
-      .then(() => {
-        console.log('New activity added: Item deleted');
+        res.status(200).send();
       })
       .catch(err => {
-        res.json(err);
+        res.status(400).send();
       });
   }
 };
