@@ -1,21 +1,29 @@
-const { db } = require('./config/db');
-const { Section } = require('../section');
-const { User } = require('../user');
-const Sequelize = require('sequelize');
-
-var Item = db.define('item', 
-{
-	id: { type: Sequelize.INTEGER, primaryKey: true },
- 	name: { type: Sequelize.TEXT, allowNull: false },
- 	email: { type: Sequelize.STRING, allowNull: false },
- 	done: { type: Sequelize.BOOLEAN, allowNull: false, defaultValue: false },
- 	date_added: { type: Sequelize.DATE, defaultValue: Sequelize.NOW },
- 	expired: { type: Sequelize.BOOLEAN, allowNull: false, defaultValue: false },
-},
-//options
-{ underscored: true })
-
-Item.belongsTo(User);
-Item.belongsTo(Section);
-
-module.exports = {Item};
+'use strict';
+module.exports = (sequelize, DataTypes) => {
+  var Item = sequelize.define(
+    'Item',
+    {
+      name: { type: DataTypes.STRING, allowNull: false },
+      done: { type: DataTypes.BOOLEAN, defaultValue: false },
+      expired: { type: DataTypes.BOOLEAN, defaultValue: false },
+      food_id: { type: DataTypes.INTEGER, allowNull: false },
+      section: { type: DataTypes.STRING, allowNull: false },
+      isFavorite: { type: DataTypes.BOOLEAN, defaultValue: false }
+    },
+    {
+      underscore: true,
+      timestamps: false,
+      createdAt: {
+        defaultValue: DataTypes.NOW
+      },
+      updatedAt: {
+        defaultValue: DataTypes.NOW
+      }
+    }
+  );
+  Item.associate = function(models) {
+    // Item.belongsTo(models.Section, { foreignKey: 'section_id' });
+    Item.belongsTo(models.User, { foreignKey: 'user_id' });
+  };
+  return Item;
+};

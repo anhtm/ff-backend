@@ -6,7 +6,7 @@ const Sequelize = require('sequelize');
 var Section = db.define('section', 
 {
 	id: { type: Sequelize.INTEGER, primaryKey: true },
- 	name: { type: Sequelize.TEXT, allowNull: false },
+ 	name: { type: Sequelize.STRING, allowNull: false },
  	total: { type: Sequelize.INTEGER, defaultValue: 0}
 },
 { underscored: true })
