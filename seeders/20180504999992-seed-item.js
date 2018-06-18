@@ -6,28 +6,44 @@ module.exports = {
       'Items',
       [
         {
+          name: 'chicken',
+          done: true,
+          food_id: 113,
+          section_id: 2,
+          expired: false,
+          user_id: 3
+        },
+        {
+          name: 'strawberries',
+          done: false,
+          food_id: 481,
+          section_id: 1,
+          expired: true,
+          user_id: 1
+        },
+        {
+          name: 'ham',
+          done: false,
+          food_id: 108,
+          section_id: 3,
+          expired: false,
+          user_id: 4
+        },
+        {
+          name: 'kimchi',
+          done: false,
+          food_id: 493,
+          section_id: 1,
+          expired: false,
+          user_id: 2
+        },
+        {
           name: 'cheese',
-          done: false,
-          expired: false,
-          user_id: 1,
-          food_id: 6,
-          section: 'refrigerator'
-        },
-        {
-          name: 'beef',
-          done: false,
-          expired: false,
-          user_id: 2,
-          food_id: 34,
-          section: 'freezer'
-        },
-        {
-          name: 'eggs',
-          done: false,
-          expired: false,
-          user_id: 1,
-          food_id: 21,
-          section: 'refrigerator'
+          done: true,
+          food_id: 3,
+          section_id: 1,
+          expired: true,
+          user_id: 1
         }
       ],
       {}

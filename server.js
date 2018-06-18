@@ -19,16 +19,6 @@ app.use(
 app.use(cors());
 require('./routes')(app);
 
-/* Connect to MySQL on start
-database.connect(db.MODE_PRODUCTION, (err) => {
-  if (err) {
-    console.log('Unable to connect to MySQL.')
-    process.exit(1)
-  } else {
-    console.log("Database is connected...");
-  }
-}) */
-
 server.listen(port, () => {
   console.log(`Server is up on port ${port}`);
   db.sequelize.sync();

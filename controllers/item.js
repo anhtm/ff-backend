@@ -6,10 +6,10 @@ const _ = require('lodash');
 module.exports = {
   index(req, res) {
     Item.findAll({
-      where: { user_id: req.params.user_id }
+      where: { user_id: req.user.id, section_id: req.params.section_id }
     })
       .then(items => {
-        sendResult(res, 200, items);
+        res.send(items);
       })
       .catch(err => {
         sendResult(res, 400, err);
@@ -42,7 +42,7 @@ module.exports = {
     Item.create({
       name: req.body.name,
       food_id: req.body.food_id,
-      section: req.body.section,
+      section_id: req.body.section_id,
       user_id: req.user.id
     })
       .then(newItem => {

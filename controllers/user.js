@@ -28,6 +28,7 @@ module.exports = {
   },
 
   showInPrivate: (req, res) => {
+    console.log(res.token);
     res.send(req.user);
   },
 
@@ -89,7 +90,7 @@ module.exports = {
         });
       })
       .catch(e => {
-        res.status(400).send();
+        res.status(400).send(e);
       });
   },
 

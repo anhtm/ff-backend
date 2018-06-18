@@ -25,7 +25,11 @@ module.exports = (sequelize, DataTypes) => {
       onDelete: 'cascade',
       hooks: true
     });
-    Activity.belongsTo(models.User, { foreignKey: 'user_id' });
+    Activity.belongsTo(models.User, {
+      foreignKey: 'user_id',
+      onDelete: 'cascade',
+      hooks: true
+    });
     // Activity.belongsTo(models.Section, { foreignKey: 'section_id' });
   };
   return Activity;

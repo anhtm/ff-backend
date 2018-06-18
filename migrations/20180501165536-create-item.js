@@ -20,8 +20,8 @@ module.exports = {
         type: Sequelize.INTEGER,
         allowNull: false
       },
-      section: {
-        type: Sequelize.STRING,
+      section_id: {
+        type: Sequelize.INTEGER,
         allowNull: false
       },
       expired: {
@@ -31,6 +31,10 @@ module.exports = {
       isFavorite: {
         type: Sequelize.BOOLEAN,
         defaultValue: false
+      },
+      date_added: {
+        type: Sequelize.DATEONLY,
+        allowNull: false
       },
       createdAt: {
         allowNull: true,

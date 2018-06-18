@@ -5,7 +5,7 @@ const { authenticate } = require('./helpers/authenticate');
 
 module.exports = app => {
   app.get('/', (req, res) => {
-    res.send('Hello world');
+    res.send({ msg: 'Hello world' });
   });
   app.get('/users', userRoutes.index);
   app.get('/user/id/:id', userRoutes.show);
@@ -14,7 +14,7 @@ module.exports = app => {
   app.put('/user/:id', userRoutes.update);
   app.delete('/user/:id', userRoutes.delete);
 
-  app.get('/items', authenticate, itemRoutes.index);
+  app.get('/items/section/:section_id', authenticate, itemRoutes.index);
   app.get('/item/:item_id', authenticate, itemRoutes.showWithUserId);
   app.post('/item', authenticate, itemRoutes.create);
   app.put('/item/:item_id', authenticate, itemRoutes.update);

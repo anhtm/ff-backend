@@ -13,10 +13,20 @@ module.exports = (sequelize, DataTypes) => {
       last_name: { type: DataTypes.STRING, allowNull: false },
       email: {
         type: DataTypes.STRING,
-        allowNull: false,
-        unique: true,
+        allowNull: {
+          args: false,
+          msg: 'Sorry, this field is required. Please try again.'
+        },
+        unique: {
+          args: true,
+          msg:
+            'This email address already exists. Please try to sign in instead.'
+        },
         validate: {
-          isEmail: true
+          isEmail: {
+            args: true,
+            msg: 'The input you entered is invalid. Please try again.'
+          }
         }
       },
       password: {
@@ -25,7 +35,9 @@ module.exports = (sequelize, DataTypes) => {
         validate: {
           isLongEnough: function(val) {
             if (val.length < 8) {
-              throw new Error('Please choose a longer password');
+              throw new Error(
+                'Please choose a password with at least 8 characters.'
+              );
             }
           }
         }
